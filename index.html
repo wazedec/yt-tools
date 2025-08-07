@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YTTools - Outils YouTube Professionnels</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #ff4757;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: #ff4757;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tool-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .tool-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .result-area {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .thumbnail-preview {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .video-info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .video-info h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-info p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .download-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .download-link {
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+        
+        .download-link:hover {
+            background: #218838;
+        }
+        
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .success {
+            color: #155724;
+            background: #d4edda;
+            padding: 0.8rem;
+            border-radius: 5px;
+            border-left: 4px solid #28a745;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">YT<span>Tools</span></a>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Accueil</a></li>
+                        <li><a href="#tools">Outils</a></li>
+                        <li><a href="#about">À Propos</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Outils YouTube Professionnels</h1>
+            <p>Téléchargez des vidéos, extrayez des miniatures et analysez le contenu YouTube facilement</p>
+        </div>
+    </section>
+
+    <section id="tools">
+        <div class="container">
+            <div class="tools-grid">
+                <!-- Outil Miniature -->
+                <div class="tool-card">
+                    <h3>🖼️ Extracteur de Miniature</h3>
+                    <p>Obtenez la miniature haute qualité de n'importe quelle vidéo YouTube</p>
+                    <div class="input-group">
+                        <label for="thumbnail-url">URL de la vidéo YouTube :</label>
+                        <input type="text" id="thumbnail-url" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn" onclick="extractThumbnail()">Extraire la Miniature</button>
+                    <div id="thumbnail-result" class="result-area hidden"></div>
+                </div>
+
+                <!-- Outil Informations Vidéo -->
+                <div class="tool-card">
+                    <h3>📊 Informations de la Vidéo</h3>
+                    <p>Obtenez des informations détaillées sur une vidéo YouTube</p>
+                    <div class="input-group">
+                        <label for="info-url">URL de la vidéo YouTube :</label>
+                        <input type="text" id="info-url" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn" onclick="getVideoInfo()">Obtenir les Informations</button>
+                    <div id="info-result" class="result-area hidden"></div>
+                </div>
+
+                <!-- Outil ID Vidéo -->
+                <div class="tool-card">
+                    <h3>🔍 Extracteur d'ID Vidéo</h3>
+                    <p>Extrayez l'ID unique d'une vidéo YouTube à partir de son URL</p>
+                    <div class="input-group">
+                        <label for="id-url">URL de la vidéo YouTube :</label>
+                        <input type="text" id="id-url" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn" onclick="extractVideoId()">Extraire l'ID</button>
+                    <div id="id-result" class="result-area hidden"></div>
+                </div>
+
+                <!-- Outil Téléchargement -->
+                <div class="tool-card">
+                    <h3>⬇️ Téléchargeur de Vidéo</h3>
+                    <p>Téléchargez des vidéos YouTube en différentes qualités</p>
+                    <div class="input-group">
+                        <label for="download-url">URL de la vidéo YouTube :</label>
+                        <input type="text" id="download-url" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <button class="btn" onclick="generateDownloadLinks()">Générer les Liens</button>
+                    <div id="download-result" class="result-area hidden"></div>
+                </div>
+
+                <!-- Outil Embed -->
+                <div class="tool-card">
+                    <h3>📺 Générateur d'Embed</h3>
+                    <p>Générez le code d'intégration HTML pour vos vidéos YouTube</p>
+                    <div class="input-group">
+                        <label for="embed-url">URL de la vidéo YouTube :</label>
+                        <input type="text" id="embed-url" placeholder="https://www.youtube.com/watch?v=...">
+                    </div>
+                    <div class="input-group">
+                        <label for="embed-width">Largeur :</label>
+                        <input type="number" id="embed-width" value="560" min="200" max="1920">
+                    </div>
+                    <div class="input-group">
+                        <label for="embed-height">Hauteur :</label>
+                        <input type="number" id="embed-height" value="315" min="150" max="1080">
+                    </div>
+                    <button class="btn" onclick="generateEmbed()">Générer l'Embed</button>
+                    <div id="embed-result" class="result-area hidden"></div>
+                </div>
+
+                <!-- Outil Playlist -->
+                <div class="tool-card">
+                    <h3>📋 Analyseur de Playlist</h3>
+                    <p>Obtenez des informations sur les playlists YouTube</p>
+                    <div class="input-group">
+                        <label for="playlist-url">URL de la playlist YouTube :</label>
+                        <input type="text" id="playlist-url" placeholder="https://www.youtube.com/playlist?list=...">
+                    </div>
+                    <button class="btn" onclick="analyzePlaylist()">Analyser la Playlist</button>
+                    <div id="playlist-result" class="result-area hidden"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 YTTools. Tous droits réservés. Outils YouTube professionnels.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fonction pour extraire l'ID de vidéo YouTube
+        function getYouTubeVideoId(url) {
+            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[7].length === 11) ? match[7] : null;
+        }
+
+        // Fonction pour extraire l'ID de playlist YouTube
+        function getYouTubePlaylistId(url) {
+            const regExp = /[&?]list=([^&]+)/;
+            const match = url.match(regExp);
+            return match ? match[1] : null;
+        }
+
+        // Outil extracteur de miniature
+        function extractThumbnail() {
+            const url = document.getElementById('thumbnail-url').value;
+            const resultDiv = document.getElementById('thumbnail-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de vidéo YouTube.');
+                return;
+            }
+            
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) {
+                showError(resultDiv, 'URL YouTube invalide.');
+                return;
+            }
+            
+            const thumbnailUrls = {
+                'Haute qualité (1280x720)': `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                'Qualité standard (640x480)': `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+                'Qualité moyenne (320x180)': `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+                'Miniature 1': `https://img.youtube.com/vi/${videoId}/1.jpg`,
+                'Miniature 2': `https://img.youtube.com/vi/${videoId}/2.jpg`,
+                'Miniature 3': `https://img.youtube.com/vi/${videoId}/3.jpg`
+            };
+            
+            let html = '<h4>Miniatures disponibles :</h4>';
+            for (const [quality, thumbUrl] of Object.entries(thumbnailUrls)) {
+                html += `
+                    <div style="margin-bottom: 1rem;">
+                        <p><strong>${quality}</strong></p>
+                        <img src="${thumbUrl}" alt="Miniature ${quality}" class="thumbnail-preview" style="max-width: 300px;">
+                        <br><br>
+                        <a href="${thumbUrl}" target="_blank" class="download-link">Voir en taille réelle</a>
+                        <button class="btn" style="width: auto; margin-left: 10px;" onclick="downloadImage('${thumbUrl}', '${videoId}_${quality.replace(/[^a-zA-Z0-9]/g, '_')}.jpg')">Télécharger</button>
+                    </div>
+                `;
+            }
+            
+            showResult(resultDiv, html);
+        }
+
+        // Fonction pour télécharger une image
+        function downloadImage(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Outil informations vidéo
+        function getVideoInfo() {
+            const url = document.getElementById('info-url').value;
+            const resultDiv = document.getElementById('info-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de vidéo YouTube.');
+                return;
+            }
+            
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) {
+                showError(resultDiv, 'URL YouTube invalide.');
+                return;
+            }
+            
+            // Simulation d'informations (dans un vrai projet, vous utiliseriez l'API YouTube)
+            const info = {
+                id: videoId,
+                url: `https://www.youtube.com/watch?v=${videoId}`,
+                embedUrl: `https://www.youtube.com/embed/${videoId}`,
+                thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+            };
+            
+            const html = `
+                <div class="video-info">
+                    <h4>Informations de la vidéo</h4>
+                    <p><strong>ID de la vidéo :</strong> ${info.id}</p>
+                    <p><strong>URL de la vidéo :</strong> <a href="${info.url}" target="_blank">${info.url}</a></p>
+                    <p><strong>URL d'intégration :</strong> ${info.embedUrl}</p>
+                    <p><strong>URL de la miniature :</strong> <a href="${info.thumbnailUrl}" target="_blank">Voir la miniature</a></p>
+                </div>
+            `;
+            
+            showResult(resultDiv, html);
+        }
+
+        // Outil extracteur d'ID vidéo
+        function extractVideoId() {
+            const url = document.getElementById('id-url').value;
+            const resultDiv = document.getElementById('id-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de vidéo YouTube.');
+                return;
+            }
+            
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) {
+                showError(resultDiv, 'URL YouTube invalide.');
+                return;
+            }
+            
+            const html = `
+                <h4>ID de la vidéo extrait avec succès !</h4>
+                <p><strong>ID :</strong> <code style="background: #e9ecef; padding: 5px 10px; border-radius: 3px;">${videoId}</code></p>
+                <button class="btn" style="width: auto;" onclick="copyToClipboard('${videoId}')">Copier l'ID</button>
+            `;
+            
+            showResult(resultDiv, html);
+        }
+
+        // Outil téléchargement (liens simulés)
+        function generateDownloadLinks() {
+            const url = document.getElementById('download-url').value;
+            const resultDiv = document.getElementById('download-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de vidéo YouTube.');
+                return;
+            }
+            
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) {
+                showError(resultDiv, 'URL YouTube invalide.');
+                return;
+            }
+            
+            // Note: Les vrais liens de téléchargement nécessiteraient un backend
+            const html = `
+                <h4>Options de téléchargement</h4>
+                <p><em>Note: Pour des raisons légales et techniques, les liens de téléchargement direct nécessitent un service backend. Voici des alternatives :</em></p>
+                <div class="download-links">
+                    <a href="https://www.y2mate.com/youtube/${videoId}" target="_blank" class="download-link">Y2mate</a>
+                    <a href="https://www.savefrom.net/1-how-to-download-youtube-video" target="_blank" class="download-link">SaveFrom</a>
+                    <a href="https://ytmp3.cc/youtube-to-mp3/" target="_blank" class="download-link">YTMP3</a>
+                </div>
+                <p style="margin-top: 1rem; font-size: 0.9em; color: #666;">
+                    Respectez les droits d'auteur et les conditions d'utilisation de YouTube.
+                </p>
+            `;
+            
+            showResult(resultDiv, html);
+        }
+
+        // Outil générateur d'embed
+        function generateEmbed() {
+            const url = document.getElementById('embed-url').value;
+            const width = document.getElementById('embed-width').value;
+            const height = document.getElementById('embed-height').value;
+            const resultDiv = document.getElementById('embed-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de vidéo YouTube.');
+                return;
+            }
+            
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) {
+                showError(resultDiv, 'URL YouTube invalide.');
+                return;
+            }
+            
+            const embedCode = `<iframe width="${width}" height="${height}" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+            
+            const html = `
+                <h4>Code d'intégration généré :</h4>
+                <textarea readonly style="width: 100%; height: 120px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: monospace; font-size: 12px;">${embedCode}</textarea>
+                <br><br>
+                <button class="btn" style="width: auto;" onclick="copyToClipboard('${embedCode.replace(/'/g, "\\'")}')">Copier le Code</button>
+                <div style="margin-top: 15px;">
+                    <h5>Aperçu :</h5>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                        ${embedCode}
+                    </div>
+                </div>
+            `;
+            
+            showResult(resultDiv, html);
+        }
+
+        // Outil analyseur de playlist
+        function analyzePlaylist() {
+            const url = document.getElementById('playlist-url').value;
+            const resultDiv = document.getElementById('playlist-result');
+            
+            if (!url) {
+                showError(resultDiv, 'Veuillez entrer une URL de playlist YouTube.');
+                return;
+            }
+            
+            const playlistId = getYouTubePlaylistId(url);
+            if (!playlistId) {
+                showError(resultDiv, 'URL de playlist YouTube invalide.');
+                return;
+            }
+            
+            const html = `
+                <div class="video-info">
+                    <h4>Informations de la playlist</h4>
+                    <p><strong>ID de la playlist :</strong> ${playlistId}</p>
+                    <p><strong>URL de la playlist :</strong> <a href="${url}" target="_blank">Ouvrir la playlist</a></p>
+                    <p><em>Note: L'analyse détaillée des playlists nécessite l'API YouTube Data v3 pour obtenir le nombre de vidéos, les titres, etc.</em></p>
+                    <button class="btn" style="width: auto; margin-top: 10px;" onclick="copyToClipboard('${playlistId}')">Copier l'ID de la playlist</button>
+                </div>
+            `;
+            
+            showResult(resultDiv, html);
+        }
+
+        // Fonctions utilitaires
+        function showResult(element, html) {
+            element.innerHTML = html;
+            element.classList.remove('hidden');
+        }
+
+        function showError(element, message) {
+            element.innerHTML = `<div class="error">${message}</div>`;
+            element.classList.remove('hidden');
+        }
+
+        function showSuccess(element, message) {
+            element.innerHTML = `<div class="success">${message}</div>`;
+            element.classList.remove('hidden');
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Copié dans le presse-papiers !');
+                }).catch(err => {
+                    console.error('Erreur lors de la copie:', err);
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                alert('Copié dans le presse-papiers !');
+            } catch (err) {
+                alert('Erreur lors de la copie. Veuillez copier manuellement.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // Navigation fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Validation en temps réel des URLs
+        const urlInputs = document.querySelectorAll('input[id$="-url"]');
+        urlInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value && !value.includes('youtube.com') && !value.includes('youtu.be')) {
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    this.style.borderColor = '#e1e8ed';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
